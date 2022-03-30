@@ -10,28 +10,16 @@ export async function logIn(){
 
     console.log("Logging in!");
 
-    try {
-        const userCred = await signInWithPopup(auth, provider);
+    const userCred = await signInWithPopup(auth, provider);
 
-        return {
-            accessToken: userCred.user.accessToken,
-            email: userCred.user.email,
-            uid: userCred.user.uid,
-        }
-    }
-    catch (e) {
-        console.log(e);
+    return {
+        accessToken: userCred.user.accessToken,
+        email: userCred.user.email,
+        uid: userCred.user.uid,
     }
 }
 
 export async function logOut(){
-
     console.log("Logging out!");
-
-    try {
-        await signOut(auth);
-    }
-    catch (e) {
-        console.log(e);
-    }
+    await signOut(auth);
 }

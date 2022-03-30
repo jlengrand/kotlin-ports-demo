@@ -1,14 +1,10 @@
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.await
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import kotlin.js.Promise
-
 
 data class FirebaseUser(
     val email: String,
@@ -25,6 +21,7 @@ external object FirebasePorts{
 
 fun main() {
     var user : FirebaseUser? by mutableStateOf(null)
+    var error : String? by mutableStateOf(null)
 
     renderComposable(rootElementId = "root") {
 
@@ -39,9 +36,10 @@ fun main() {
 
                 Button(attrs = {
                     onClick {
-                        GlobalScope.launch {
-                            user = FirebasePorts.logIn().await()
-                        }
+                        error = null
+                        FirebasePorts.logIn()
+                            .then { user = it }
+                            .catch { error = it.message }
                     }
                 }) {
                     Text("LogIn!")
@@ -52,6 +50,8 @@ fun main() {
             Div({ style { padding(25.px) } }) {
                 Button(attrs = {
                     onClick {
+                        error = null
+
                         FirebasePorts.logOut()
                         user = null
                     }
@@ -67,6 +67,15 @@ fun main() {
 
                 P(){
                     Text(JSON.stringify(user))
+                }
+            }
+        }
+
+        if (error != null) {
+            Div({ style { padding(25.px) } }){
+                P() {
+                    Text("Error: ")
+                    Text(error!!)
                 }
             }
         }

@@ -1,43 +1,22 @@
 import {FIREBASE_CONFIG} from "./constants";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
 const firebaseApp = initializeApp(FIREBASE_CONFIG);
+const provider = new GoogleAuthProvider();
 const auth = getAuth();
 
-export async function signUp(email, password){
+export async function logIn(){
 
-    console.log("Signing Up");
+    console.log("Logging in!");
 
     try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const userCred = await signInWithPopup(auth, provider);
 
         return {
             accessToken: userCred.user.accessToken,
             email: userCred.user.email,
             uid: userCred.user.uid,
-            lastLogin: userCred.user.metadata.lastLoginAt,
-            createdAt : userCred.user.metadata.createdAt
-        }
-    }
-    catch (e) {
-        console.log(e);
-    }
-}
-
-export async function logIn(email, password){
-
-    console.log("Signing In");
-
-    try {
-        const userCred = await signInWithEmailAndPassword(auth, email, password);
-
-        return {
-            accessToken: userCred.user.accessToken,
-            email: userCred.user.email,
-            uid: userCred.user.uid,
-            lastLogin: userCred.user.metadata.lastLoginAt,
-            createdAt : userCred.user.metadata.createdAt
         }
     }
     catch (e) {

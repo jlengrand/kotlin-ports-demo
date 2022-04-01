@@ -25,9 +25,12 @@ external object FirebasePorts{
 
     fun saveMessage(uid: String, message: String)
     fun getMessages(uid: String) : Promise<Array<FirestoreMessage>>
+
+    fun syncMessages(uid:String, callback: (Array<FirestoreMessage>?) -> Unit)
 }
 
 fun main() {
+
     var user : FirebaseUser? by mutableStateOf(null)
     var error : String? by mutableStateOf(null)
     var message : String by mutableStateOf("")
@@ -48,7 +51,11 @@ fun main() {
                     onClick {
                         error = null
                         FirebasePorts.logIn()
-                            .then { user = it }
+                            .then { user = it;
+
+                                // Subscribes to receiving new messages
+                                FirebasePorts.syncMessages(it.uid) { newMessages -> messages = newMessages }
+                            }
                             .catch { error = it.message }
                     }
                 }) {
@@ -88,7 +95,6 @@ fun main() {
                 TextArea(value = message,
                     attrs = {
                     onInput {
-                        console.log(it.value)
                         message = it.value
                     }
                 })
@@ -96,9 +102,6 @@ fun main() {
                 Button(attrs = {
                     onClick {
                         error = null
-                        console.log(JSON.stringify(user))
-                        console.log(user)
-                        console.log(user!!.uid)
                         FirebasePorts.saveMessage(user!!.uid, message)
                         message = ""
                     }

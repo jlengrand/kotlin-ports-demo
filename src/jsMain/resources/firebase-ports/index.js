@@ -1,7 +1,7 @@
 import {FIREBASE_CONFIG} from "./constants";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { collection, addDoc, getFirestore, getDocs}  from "firebase/firestore";
+import { collection, addDoc, getFirestore, getDocs, onSnapshot, query}  from "firebase/firestore";
 
 const firebaseApp = initializeApp(FIREBASE_CONFIG);
 const provider = new GoogleAuthProvider();
@@ -47,4 +47,21 @@ export async function getMessages(uid){
     });
 
     return messages;
+}
+
+export async function syncMessages(uid, callback){
+    console.log("syncMessages activated!");
+
+    const q = query(collection(firestore, `users/${uid}/messages`));
+    onSnapshot(q, (querySnapshot) => {
+        const messages = [];
+        querySnapshot.forEach((doc) => {
+            messages.push({
+                id: doc.id,
+                content: doc.data().content
+            })
+        });
+
+        callback(messages);
+    });
 }

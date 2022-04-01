@@ -1,3 +1,4 @@
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -29,6 +30,13 @@ external object FirebasePorts{
     fun syncMessages(uid:String, callback: (Array<FirestoreMessage>?) -> Unit)
 }
 
+@Composable
+fun LineBreak(){
+    return P(){
+        Text("---------------")
+    }
+}
+
 fun main() {
 
     var user : FirebaseUser? by mutableStateOf(null)
@@ -38,15 +46,12 @@ fun main() {
 
     renderComposable(rootElementId = "root") {
 
-        Div(){
-            H1 {
-                Text(value = "Jetpack Compose Firebase demo")
-            }
+        H1 {
+            Text(value = "Jetpack Compose Firebase demo")
         }
 
         if(user == null) {
-            Div({ style { padding(25.px) } }) {
-
+            Div({ id("login")}) {
                 Button(attrs = {
                     onClick {
                         error = null
@@ -59,12 +64,12 @@ fun main() {
                             .catch { error = it.message }
                     }
                 }) {
-                    Text("LogIn!")
+                    Text("Login!")
                 }
             }
         }
         else {
-            Div({ style { padding(25.px) } }) {
+            Div({ id("logout")}) {
                 Button(attrs = {
                     onClick {
                         error = null
@@ -73,13 +78,15 @@ fun main() {
                         user = null
                     }
                 }) {
-                    Text("LogOut!")
+                    Text("Logout!")
                 }
             }
 
-            Div({ style { padding(25.px) } }){
-                P(){
-                    Text("---------------")
+            Div(){
+                LineBreak()
+
+                H2 {
+                    Text(value = "You are logged in! Here is the info I have about you")
                 }
 
                 P(){
@@ -87,9 +94,11 @@ fun main() {
                 }
             }
 
-            Div({ style { padding(25.px) } }){
-                P(){
-                    Text("---------------")
+            Div({ id("message")}){
+                LineBreak()
+
+                H2 {
+                    Text(value = "Write a new message to your message log")
                 }
 
                 TextArea(value = message,
@@ -110,9 +119,11 @@ fun main() {
                 }
             }
 
-            Div({ style { padding(25.px) } }) {
-                P(){
-                    Text("---------------")
+            Div({ id("messages")}) {
+                LineBreak()
+
+                H2 {
+                    Text(value = "Messages are updated automatically, but you still can refetch them manually with that button")
                 }
 
                 Button(attrs = {
@@ -123,7 +134,11 @@ fun main() {
                             .catch { error = it.message }
                     }
                 }) {
-                    Text("Retrieve messages!")
+                    Text("Retrieve messages manually!")
+                }
+
+                H2 {
+                    Text(value = "Your message log : ")
                 }
 
                 if (messages == null){
@@ -141,16 +156,16 @@ fun main() {
                     }
                 }
 
-                P(){
-                    Text("---------------")
-                }
+                LineBreak()
             }
         }
 
         if (error != null) {
-            Div({ style { padding(25.px) } }){
-                P(){
-                    Text("---------------")
+            Div({ id("error")}){
+                LineBreak()
+
+                H2{
+                    Text("Error log. If empty, everything went fine :)")
                 }
 
                 P() {
@@ -161,4 +176,3 @@ fun main() {
         }
     }
 }
-

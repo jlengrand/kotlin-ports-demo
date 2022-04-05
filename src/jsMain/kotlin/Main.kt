@@ -2,18 +2,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import kotlin.js.Promise
 
-external interface FirebaseUser{
+external interface AppUser{
     val email: String
     val uid: String
     val accessToken: String
 }
 
-external interface FirestoreMessage{
+external interface AppMessage{
     val id: String
     val content: String
 }
@@ -21,13 +20,13 @@ external interface FirestoreMessage{
 @JsModule("@jlengrand/firebase-ports")
 @JsNonModule
 external object FirebasePorts{
-    fun logIn() : Promise<FirebaseUser>
+    fun logIn() : Promise<AppUser>
     fun logOut()
 
     fun saveMessage(uid: String, message: String)
-    fun getMessages(uid: String) : Promise<Array<FirestoreMessage>>
+    fun getMessages(uid: String) : Promise<Array<AppMessage>>
 
-    fun syncMessages(uid:String, callback: (Array<FirestoreMessage>?) -> Unit)
+    fun syncMessages(uid:String, callback: (Array<AppMessage>?) -> Unit)
 }
 
 @Composable
@@ -39,10 +38,10 @@ fun LineBreak(){
 
 fun main() {
 
-    var user : FirebaseUser? by mutableStateOf(null)
+    var user : AppUser? by mutableStateOf(null)
     var error : String? by mutableStateOf(null)
     var message : String by mutableStateOf("")
-    var messages : Array<FirestoreMessage>? by mutableStateOf(null)
+    var messages : Array<AppMessage>? by mutableStateOf(null)
 
     renderComposable(rootElementId = "root") {
 

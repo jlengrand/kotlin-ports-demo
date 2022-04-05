@@ -9,6 +9,7 @@ const auth = getAuth();
 const firestore = getFirestore(firebaseApp);
 
 export async function logIn(){
+
     console.log("Logging in!");
 
     const userCred = await signInWithPopup(auth, provider);

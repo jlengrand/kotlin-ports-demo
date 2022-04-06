@@ -2,14 +2,11 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a5e6c09a-f21f-4d3a-834c-78e5f9dfff15/deploy-status)](https://app.netlify.com/sites/kotlin-ports-demo/deploys)
 
-This repository is a demo of how the [Elm ports] method can be used to quickly introduce a Javascript library into a Kotlin/JS project without too much work with external declarations.
+This repository is a demo of how the [Elm ports](https://guide.elm-lang.org/interop/ports.html) method can be used to quickly introduce a Javascript library into a Kotlin/JS project without too much work with external declarations.
 
-You can demo the app **[here](https://kotlin-ports-demo.netlify.app/)**.
-
-It is a support to **[this blog post](https://lengrand.fr/using-elm-knowledge-to-dive-into-kotlin-js)**
-
-This repository contains a short [Kotlin/Js](https://kotlinlang.org/docs/js-interop.html) project with a [Firebase integration](https://firebase.google.com/).
-
+* This repository contains a short [Kotlin/Js](https://kotlinlang.org/docs/js-interop.html) project with a [Firebase integration](https://firebase.google.com/).
+* You can demo the app **[here](https://kotlin-ports-demo.netlify.app/)**.
+* It is a support to **[this blog post](https://lengrand.fr/using-elm-knowledge-to-dive-into-kotlin-js)**
 
 ## Getting started
 
@@ -23,7 +20,7 @@ To run this app locally, you will need to :
 - Go to the [Firebase console](https://console.firebase.google.com/?pli=1) and create a new project
 - Setup Google Signin in the Authentication part.
 
-![How to setup Google Sign-In](images/auth-setup.png)
+![How to setup Google Sign-In](https://github.com/jlengrand/elm-firebase/blob/master/images/auth-setup.png)
 
 - Create a new Cloud Firestore in locked mode
 - Change the Firestore rules so that only logged requests can be written / read.
@@ -68,7 +65,7 @@ The easiest way is to go to the settings page of your project, and scroll down u
 
 _Note : All the information in the .env file is not secret, and can be shared. In fact, it will be accessible to anyone using your app via the console. [This is not a problem](https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public)!_
 
-![Settings page of Firebase project](images/settings.png)
+![Settings page of Firebase project](https://github.com/jlengrand/elm-firebase/blob/master/images/settings.png)
 
 - Run the app : `$ ./gradlew clean build jsBrowserDevelopmentRun`. You will be able to test the app at `http://localhost:8080`!
 
